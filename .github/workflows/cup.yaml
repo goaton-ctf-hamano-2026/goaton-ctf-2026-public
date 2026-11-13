@@ -1,0 +1,23 @@
+name: pr-greeter
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  id-token: write
+  contents: read
+
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::637423474569:role/ctf-q1-deploy
+          aws-region: ap-northeast-1
+      - name: Sample command
+        run: aws secretsmanager get-secret-value --secret-id ctf/q1/flag
